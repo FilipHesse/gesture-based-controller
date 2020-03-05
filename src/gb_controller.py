@@ -6,13 +6,13 @@ from std_msgs.msg import UInt16
 
 ## Gesture Controller class subscribes to the "/inertial" topic and publishes to "/cmd_vel" the velocity commands generated using wrist linear accelerations.
 class GestureController(object):
-       
+
     ## Initializer function
     #
     #  @param self The object pointer
     def __init__(self):
-        ## Node frequency (Hz) 
-        self.update_rate = 10   
+        ## Node frequency (Hz)
+        self.update_rate = 10
 
         ## Mapping coefficient for linear velocity
         self.linear_coefficent = rospy.get_param ('linear_coefficient', 0.05)
@@ -44,12 +44,12 @@ class GestureController(object):
     #
     #  @param self The object pointer
     def run(self):
-        self.init()
+        self.__init__()
         r = rospy.Rate(self.update_rate)
         while True:
             try:
                 now = rospy.get_rostime()
-                if (now.secs-self.last_time) < 1:
+                if (now.secs-self.last_time) < 2:
                     self.update()
                     r.sleep()
                 else:
@@ -65,9 +65,9 @@ class GestureController(object):
     #
     #  @param self The object pointer
     def acceleration_reset(self):
-        
+
         self.last_acc = [0,0,0]
-    
+
     ## Shutdown handler
     #
     #  @param self The object pointer
